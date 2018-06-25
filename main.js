@@ -13,6 +13,7 @@ const Model = {
         .then((response) => response.json())
         .then((resource) => {
           console.log(title,resource);
+         // Controller.listResource(resource);
         });
     },
     
@@ -23,8 +24,13 @@ const Model = {
         .then((resource) => {
             View.displayTenLatest(resource);
           console.log("Ten latest :",title,resource);
+          //Controller.listResource(resource);
         });
     },
+
+   
+
+        
     
     postResource(resource,artist){
         fetch(`https://folksa.ga/api/${resource}?key=${Model.apiKey}`,{
@@ -39,9 +45,10 @@ const Model = {
       .then((artist) => {
         
         console.log("new artist :",artist);
-        Model.fetchResource(resource);
-        View.displayCreatedArtist(artist);
-        
+        Model.fetchTenLatest(resource);
+        console.log('this',resource)
+        //Model.fetchResource(resource);
+        View.displayCreatedArtist(artist); 
       });
 
    }
@@ -68,12 +75,14 @@ const View = {
          //artist
     },
     displayTenLatest(artist){
+        for(let resource of artist){
         const div = document.getElementById('tenLatest');
         const tenLatestinfo = document.createElement('ul');
         const tenLatestLi = document.createElement('li');
-        tenLatestLi.innerText = "David";
+        tenLatestLi.innerText = resource.name;
         div.appendChild(tenLatestinfo);
         tenLatestinfo.appendChild(tenLatestLi);
+        }
   
     }
     
@@ -110,10 +119,19 @@ const Controller = {
             //console.log(Controller.artist.name, Controller.artist.genres);
         });
     
-    }
+    },
+
+    //fetchUpdateTenLatest(resources) {
+       // for(let resource of resources ) {
+            //View.displayTenLatest(resource)
+            //console.log(`Resourse:` ,resource )
+       // }
+    //}
+
     
     
 }
+
 Model.fetchTenLatest(Model.artists);
 Model.fetchResource(Model.albums);
 Model.fetchResource(Model.artists);
